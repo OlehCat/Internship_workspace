@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
@@ -16,6 +17,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.commit
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.replace
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.testapp1.Extensions.Companion.colorText
 import com.example.testapp1.Extensions.Companion.validatePhone
 import com.example.testapp1.databinding.ActivityMainBinding
@@ -24,16 +29,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.random.Random
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val errorText by lazy { getString(R.string.next) }
+    private val viewModel: FirstViewModel by viewModels()
 
     private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO)
     private var job: Job? = null
@@ -62,9 +72,64 @@ class MainActivity : AppCompatActivity() {
             counter++
             doOnBackground()
         }
+        viewModel.liveData.observe(this) {
 
+        }
+
+        lifecycleScope.launch {
+            viewModel.channel.send(1)
+            viewModel.channel.send(2)
+            viewModel.channel.send(3)
+        }
+
+        lifecycleScope.launch {
+            viewModel.channel.receive().also {
+                println("qweqwe channel receive 1 $it")
+            }
+            delay(Random.nextLong(50, 500))
+            viewModel.channel.receive().also {
+                println("qweqwe channel receive 1 $it")
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.channel.receive().also {
+                println("qweqwe channel receive 2 $it")
+            }
+            delay(Random.nextLong(50, 500))
+            viewModel.channel.receive().also {
+                println("qweqwe channel receive 2 $it")
+            }
+        }
+
+        lifecycleScope.launch {
+
+            viewModel.flow.collectLatest {
+                println("qweqwe flow $it")
+            }
+
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.stateFlow.collectLatest {
+                    println("qweqwe liveData $it")
+                }
+            }
+        }
+
+
+        binding.fragmentContainer.setOnClickListener {
+            val data = viewModel.stateFlow.value
+            data!!.name = Random.nextInt(0, 100).toString()
+            lifecycleScope.launch {
+                viewModel.stateFlow.emit(data.copy(name = Random.nextInt(0, 100).toString()))
+                println("qweqwe emit $data")
+
+            }
+        }
         Adapter(::onClick)
-        println("asd MainActivity onCreate")
+
+//        supportFragmentManager.commit {
+//            replace(R.id.transparent_view, FirstFragment())
+//        }
 
 
     }

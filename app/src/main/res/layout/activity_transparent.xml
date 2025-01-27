@@ -4,5 +4,15 @@
     android:id="@+id/transparent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#80000000"> <!-- Semi-transparent background -->
+    android:background="#80000000">
+
+    <Button
+        android:id="@+id/button_1"
+        android:layout_margin="16dp"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="flow" />
+
+    <!-- Semi-transparent background -->
 </FrameLayout>
