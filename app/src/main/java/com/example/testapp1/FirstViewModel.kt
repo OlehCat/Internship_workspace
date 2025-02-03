@@ -2,14 +2,18 @@ package com.example.testapp1
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.test.domain.usecase.ProfileUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 
-class FirstViewModel: ViewModel() {
+class FirstViewModel(
+
+): ViewModel() {
 
     var flow = flow {
         var i = 0
@@ -23,7 +27,15 @@ class FirstViewModel: ViewModel() {
     val stateFlow = MutableStateFlow(Model(32))
     val sharedFlow = MutableSharedFlow<Int>()
     val channel = Channel<Int>()
+    val profileChannel = Channel<Int>()
     val liveData = MutableLiveData(Model(0))
+
+    fun loadProfile() {
+        viewModelScope.launch {
+            val result = ProfileUseCase().loadProfile()
+            profileChannel.send(result as Int)
+        }
+    }
 
 
 

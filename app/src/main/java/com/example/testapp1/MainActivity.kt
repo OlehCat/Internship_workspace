@@ -1,41 +1,20 @@
 package com.example.testapp1
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toBitmap
-import androidx.core.view.isVisible
-import androidx.fragment.app.commit
-import androidx.fragment.app.commitNow
-import androidx.fragment.app.replace
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.testapp1.Extensions.Companion.colorText
-import com.example.testapp1.Extensions.Companion.validatePhone
 import com.example.testapp1.databinding.ActivityMainBinding
+import com.test.data.Repo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
-import kotlin.math.max
-import kotlin.math.min
 import kotlin.random.Random
 
 
@@ -66,6 +45,8 @@ class MainActivity : AppCompatActivity() {
                 join()
             }
         }
+
+        println("qweqwe 0x3F.toChar() ${0x3F.toChar()}")
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.root.setOnClickListener {
@@ -75,6 +56,16 @@ class MainActivity : AppCompatActivity() {
         viewModel.liveData.observe(this) {
 
         }
+
+        lifecycleScope.launch {
+            Repo.doSomeTest()
+            delay(1500)
+            viewModel.loadProfile()
+            viewModel.profileChannel.receive().also {
+                println("qweqwe PROFILE DATA: $it")
+            }
+        }
+
 
         lifecycleScope.launch {
             viewModel.channel.send(1)
