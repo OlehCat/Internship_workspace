@@ -2,14 +2,18 @@ package com.test.data
 
 import com.test.domain.model.Profile
 import com.test.domain.repository.ProfileRepo
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ProfileRepoImpl : ProfileRepo {
 
-    private val flow: MutableStateFlow()
+class ProfileRepoImpl @Inject constructor(
+//    private val profileApi: ProfileApi,
+) : ProfileRepo {
 
-    override suspend fun getProfileFlow() = flow
+//    private val flow: MutableStateFlow()
+
+    override suspend fun getProfileFlow() = MutableStateFlow(Profile(""))
 
 
     override suspend fun loadProfile(): Profile {

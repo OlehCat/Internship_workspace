@@ -8,17 +8,22 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.testapp1.databinding.ActivityMainBinding
-import com.test.data.Repo
+import com.test.domain.usecase.ProfileUseCase
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.random.Random
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var profileUseCase: ProfileUseCase
 
     private lateinit var binding: ActivityMainBinding
     private val errorText by lazy { getString(R.string.next) }
@@ -58,7 +63,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            Repo.doSomeTest()
+            profileUseCase.loadProfile().name.also {
+                println("qweqwe profileUseCase.loadProfile().name.also: $it")
+            }
             delay(1500)
             viewModel.loadProfile()
             viewModel.profileChannel.receive().also {
