@@ -55,7 +55,7 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation(project(":domain"))
-    implementation(project(":data"))
+    implementation(project(":dependencies"))
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 }

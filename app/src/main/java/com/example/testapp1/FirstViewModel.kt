@@ -3,7 +3,6 @@ package com.example.testapp1
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.test.data.ProfileRepoImpl
 import com.test.domain.model.Profile
 import com.test.domain.usecase.ProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FirstViewModel @Inject constructor(
     private val profileUseCase: ProfileUseCase,
-    private val profileRepoImpl: ProfileRepoImpl    // Don't so this! :-)
+//    private val profileRepoImpl: ProfileRepoImpl    // Don't so this! :-)
 ): ViewModel() {
 
     var flow = flow {
@@ -40,7 +39,7 @@ class FirstViewModel @Inject constructor(
     fun loadProfile() {
         viewModelScope.launch {
             val result = profileUseCase.loadProfile()
-            val result2 = profileRepoImpl.loadProfile()     // Don't so this! :-)
+//            val result2 = profileRepoImpl.loadProfile()     // Don't so this! :-)
             profileChannel.send(result)
         }
     }

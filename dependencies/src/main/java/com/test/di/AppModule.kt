@@ -1,4 +1,4 @@
-package com.test.data.di
+package com.test.di
 
 import com.test.data.ProfileRepoImpl
 import com.test.domain.repository.ProfileRepo
@@ -9,7 +9,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
+abstract class AppModule {
 
     @Binds
     abstract fun provideProfileRepo(impl: ProfileRepoImpl): ProfileRepo
