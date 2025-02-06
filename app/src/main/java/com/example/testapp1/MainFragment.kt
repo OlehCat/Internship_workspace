@@ -1,8 +1,5 @@
 package com.example.testapp1
 
-import android.app.Dialog
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,12 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.commit
 import com.example.testapp1.databinding.FragmentMainBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class MainFragment : Fragment() {
 
@@ -26,6 +18,8 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         println("qwe MainFragment onCreateView")
+        childFragmentManager
+        parentFragmentManager
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
@@ -65,19 +59,20 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         view.findViewById<Button>(R.id.show_dialog_button).setOnClickListener {
-
-            CoroutineScope(Dispatchers.Main).launch {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://google.com")))
-                delay(2500)
-                startActivity(Intent(requireActivity(), MainActivity::class.java).apply {
-                    setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                })
-            }
-//            requireActivity().supportFragmentManager.also {
-//                it.beginTransaction()
-//                    .add(R.id.fragment_container, FirstFragment(), null)
-//                    .commit()
+//
+//            CoroutineScope(Dispatchers.Main).launch {
+//                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://google.com")))
+//                delay(2500)
+//                startActivity(Intent(requireActivity(), MainActivity::class.java).apply {
+//                    setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+//                })
 //            }
+            requireActivity().supportFragmentManager.also {
+                it.beginTransaction()
+                    .add(R.id.fragment_container, FirstFragment::class.java, null)
+                    .addToBackStack(null)
+                    .commit()
+            }
 
 //            val dialog = Dialog(requireContext())
 //            dialog.setContentView(R.layout.dialog_custom)

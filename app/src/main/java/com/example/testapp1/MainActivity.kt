@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.commit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -125,9 +126,10 @@ class MainActivity : AppCompatActivity() {
         }
         Adapter(::onClick)
 
-//        supportFragmentManager.commit {
-//            replace(R.id.transparent_view, FirstFragment())
-//        }
+        supportFragmentManager.commit {
+            add(R.id.fragment_container, MainFragment::class.java, null, null)
+            addToBackStack(null)
+        }
 
 
     }

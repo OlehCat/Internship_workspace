@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("androidx.navigation.safeargs")
 }
 
 android {
@@ -55,9 +56,13 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation(project(":domain"))
-    implementation(project(":dependencies"))
+    implementation(project(":dependency injection"))
     implementation("com.google.dagger:hilt-android:2.51.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
+
+    // Views/Fragments Integration
+    implementation ("androidx.navigation:navigation-fragment-ktx:2.8.6")
+    implementation ("androidx.navigation:navigation-ui-ktx:2.8.6")
 }
 kapt {
     correctErrorTypes = true

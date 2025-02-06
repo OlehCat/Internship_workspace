@@ -7,12 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.testapp1.databinding.FragmentFirstBinding
-import kotlin.random.Random
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
+@AndroidEntryPoint
 class FirstFragment : Fragment() {
 
     private var _binding: FragmentFirstBinding? = null
@@ -41,9 +43,11 @@ class FirstFragment : Fragment() {
         }
 
         binding.button1.setOnClickListener {
-            val data = viewModel.liveData.value
-            data!!.name = Random.nextInt(0, 100).toString()
-            viewModel.liveData.postValue(data)
+            findNavController().navigate(FirstFragmentDirections.actionFirstFragmentToSecondFragment(12L))
+            findNavController().popBackStack()
+//            val data = viewModel.liveData.value
+//            data!!.name = Random.nextInt(0, 100).toString()
+//            viewModel.liveData.postValue(data)
         }
     }
 
