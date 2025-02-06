@@ -4,11 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.testapp1.databinding.ActivityMainBinding
 import com.example.testapp1.databinding.ContentMainBinding
 import com.test.domain.usecase.ProfileUseCase
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,8 +25,8 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var profileUseCase: ProfileUseCase
 
-    private lateinit var binding: ActivityMainBinding               // TODO use this for supportFragmentManager.commit  navigation
-    private lateinit var navigationBinding: ContentMainBinding      // TODO use this for proper navigation
+//    private lateinit var binding: ActivityMainBinding               // TODO use this for supportFragmentManager.commit  navigation
+    private lateinit var binding: ContentMainBinding                 // TODO use this for proper navigation
     private val errorText by lazy { getString(R.string.next) }
     private val viewModel: FirstViewModel by viewModels()
 
@@ -55,7 +53,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         println("qweqwe 0x3F.toChar() ${0x3F.toChar()}")
-        binding = ActivityMainBinding.inflate(layoutInflater)
+//        binding = ActivityMainBinding.inflate(layoutInflater) // TODO use this for supportFragmentManager.commit  navigation
+        binding = ContentMainBinding.inflate(layoutInflater)    // TODO use this for proper navigation
         setContentView(binding.root)
         binding.root.setOnClickListener {
             counter++
@@ -117,21 +116,21 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        binding.fragmentContainer.setOnClickListener {
-            val data = viewModel.stateFlow.value
-            data!!.name = Random.nextInt(0, 100).toString()
-            lifecycleScope.launch {
-                viewModel.stateFlow.emit(data.copy(name = Random.nextInt(0, 100).toString()))
-                println("qweqwe emit $data")
-
-            }
-        }
+//        binding.fragmentContainer.setOnClickListener {
+//            val data = viewModel.stateFlow.value
+//            data!!.name = Random.nextInt(0, 100).toString()
+//            lifecycleScope.launch {
+//                viewModel.stateFlow.emit(data.copy(name = Random.nextInt(0, 100).toString()))
+//                println("qweqwe emit $data")
+//
+//            }
+//        }
         Adapter(::onClick)
 
-        supportFragmentManager.commit {
-            add(R.id.fragment_container, MainFragment::class.java, null, null)
-            addToBackStack(null)
-        }
+//        supportFragmentManager.commit {
+//            add(R.id.fragment_container, MainFragment::class.java, null, null)
+//            addToBackStack(null)
+//        }
 
 
     }

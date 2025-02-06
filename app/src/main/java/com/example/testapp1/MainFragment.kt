@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.testapp1.databinding.FragmentMainBinding
 
 class MainFragment : Fragment() {
@@ -67,12 +68,14 @@ class MainFragment : Fragment() {
 //                    setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
 //                })
 //            }
-            requireActivity().supportFragmentManager.also {
-                it.beginTransaction()
-                    .add(R.id.fragment_container, FirstFragment::class.java, null)
-                    .addToBackStack(null)
-                    .commit()
-            }
+//            requireActivity().supportFragmentManager.also {
+//                it.beginTransaction()
+//                    .add(R.id.fragment_container, FirstFragment::class.java, null)
+//                    .addToBackStack(null)
+//                    .commit()
+//            }
+
+            findNavController().navigate(MainFragmentDirections.actionMainFragmentToFirstFragment())
 
 //            val dialog = Dialog(requireContext())
 //            dialog.setContentView(R.layout.dialog_custom)
