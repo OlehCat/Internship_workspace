@@ -9,6 +9,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.testapp1.databinding.ActivityMainBinding
+import com.example.testapp1.databinding.ContentMainBinding
 import com.test.domain.usecase.ProfileUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -26,7 +27,8 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var profileUseCase: ProfileUseCase
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding               // TODO use this for supportFragmentManager.commit  navigation
+    private lateinit var navigationBinding: ContentMainBinding      // TODO use this for proper navigation
     private val errorText by lazy { getString(R.string.next) }
     private val viewModel: FirstViewModel by viewModels()
 
