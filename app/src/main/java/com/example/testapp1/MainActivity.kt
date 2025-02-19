@@ -4,17 +4,16 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import com.example.testapp1.databinding.ContentMainBinding
+import com.example.testapp1.databinding.ActivityMainBinding
+import com.example.testapp1.model.FamilyName
+import com.example.testapp1.model.Name
+import com.example.testapp1.model.PersonName
 import com.test.domain.usecase.ProfileUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.random.Random
@@ -25,8 +24,8 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var profileUseCase: ProfileUseCase
 
-//    private lateinit var binding: ActivityMainBinding               // TODO use this for supportFragmentManager.commit  navigation
-    private lateinit var binding: ContentMainBinding                 // TODO use this for proper navigation
+    private lateinit var binding: ActivityMainBinding               // TODO use this for supportFragmentManager.commit  navigation
+//    private lateinit var binding: ContentMainBinding                 // TODO use this for proper navigation
     private val errorText by lazy { getString(R.string.next) }
     private val viewModel: FirstViewModel by viewModels()
 
@@ -35,6 +34,12 @@ class MainActivity : AppCompatActivity() {
 
     @set:Synchronized
     private var counter = 0
+
+    private val adapter = Adapter(::onItemClick)
+
+    private fun onItemClick(text: String) {
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,67 +58,87 @@ class MainActivity : AppCompatActivity() {
         }
 
         println("qweqwe 0x3F.toChar() ${0x3F.toChar()}")
-//        binding = ActivityMainBinding.inflate(layoutInflater) // TODO use this for supportFragmentManager.commit  navigation
-        binding = ContentMainBinding.inflate(layoutInflater)    // TODO use this for proper navigation
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.root.setOnClickListener {
-            counter++
-            doOnBackground()
-        }
-        viewModel.liveData.observe(this) {
 
-        }
-
-        lifecycleScope.launch {
-            profileUseCase.loadProfile().name.also {
-                println("qweqwe profileUseCase.loadProfile().name.also: $it")
+        binding.rvUsers.adapter = adapter
+        adapter.submitList(listOf(
+            FamilyName("qwe2"),
+            PersonName("qwe"),
+            PersonName("qwe23"),
+            FamilyName("qwe24"),
+            PersonName("qwe25"),
+        ))
+        binding.btnRefresh.setOnClickListener {
+            val newList = mutableListOf<Name>()
+            repeat(Random.nextInt(6)) {
+                newList.add(
+                    if (Random.nextBoolean()) PersonName(Random.nextInt(25000).toString())
+                    else FamilyName(Random.nextInt(25000).toString())
+                )
             }
-            delay(1500)
-            viewModel.loadProfile()
-            viewModel.profileChannel.receive().also {
-                println("qweqwe PROFILE DATA: $it")
+            repeat(Random.nextInt(1, 3)) {
+                newList.add(adapter.items.random())
             }
-        }
-
-
-        lifecycleScope.launch {
-            viewModel.channel.send(1)
-            viewModel.channel.send(2)
-            viewModel.channel.send(3)
+            adapter.submitList(newList)
         }
 
-        lifecycleScope.launch {
-            viewModel.channel.receive().also {
-                println("qweqwe channel receive 1 $it")
-            }
-            delay(Random.nextLong(50, 500))
-            viewModel.channel.receive().also {
-                println("qweqwe channel receive 1 $it")
-            }
-        }
 
-        lifecycleScope.launch {
-            viewModel.channel.receive().also {
-                println("qweqwe channel receive 2 $it")
-            }
-            delay(Random.nextLong(50, 500))
-            viewModel.channel.receive().also {
-                println("qweqwe channel receive 2 $it")
-            }
-        }
 
-        lifecycleScope.launch {
+//        viewModel.liveData.observe(this) {
+//
+//        }
 
-            viewModel.flow.collectLatest {
-                println("qweqwe flow $it")
-            }
-
-            repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.stateFlow.collectLatest {
-                    println("qweqwe liveData $it")
-                }
-            }
-        }
+//        lifecycleScope.launch {
+//            profileUseCase.loadProfile().name.also {
+//                println("qweqwe profileUseCase.loadProfile().name.also: $it")
+//            }
+//            delay(1500)
+//            viewModel.loadProfile()
+//            viewModel.profileChannel.receive().also {
+//                println("qweqwe PROFILE DATA: $it")
+//            }
+//        }
+//
+//
+//        lifecycleScope.launch {
+//            viewModel.channel.send(1)
+//            viewModel.channel.send(2)
+//            viewModel.channel.send(3)
+//        }
+//
+//        lifecycleScope.launch {
+//            viewModel.channel.receive().also {
+//                println("qweqwe channel receive 1 $it")
+//            }
+//            delay(Random.nextLong(50, 500))
+//            viewModel.channel.receive().also {
+//                println("qweqwe channel receive 1 $it")
+//            }
+//        }
+//
+//        lifecycleScope.launch {
+//            viewModel.channel.receive().also {
+//                println("qweqwe channel receive 2 $it")
+//            }
+//            delay(Random.nextLong(50, 500))
+//            viewModel.channel.receive().also {
+//                println("qweqwe channel receive 2 $it")
+//            }
+//        }
+//
+//        lifecycleScope.launch {
+//
+//            viewModel.flow.collectLatest {
+//                println("qweqwe flow $it")
+//            }
+//
+//            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+//                viewModel.stateFlow.collectLatest {
+//                    println("qweqwe liveData $it")
+//                }
+//            }
+//        }
 
 
 //        binding.fragmentContainer.setOnClickListener {

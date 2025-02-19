@@ -63,6 +63,9 @@ dependencies {
     // Views/Fragments Integration
     implementation ("androidx.navigation:navigation-fragment-ktx:2.8.6")
     implementation ("androidx.navigation:navigation-ui-ktx:2.8.6")
+    implementation ("com.github.bumptech.glide:glide:4.15.1")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.15.0")
+    implementation ("jp.wasabeef:glide-transformations:4.3.0")
 }
 kapt {
     correctErrorTypes = true

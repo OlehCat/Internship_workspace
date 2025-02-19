@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.testapp1.databinding.FragmentMainBinding
@@ -59,7 +58,7 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view.findViewById<Button>(R.id.show_dialog_button).setOnClickListener {
+//        view.findViewById<Button>(R.id.show_dialog_button).setOnClickListener {
 //
 //            CoroutineScope(Dispatchers.Main).launch {
 //                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("http://google.com")))
@@ -87,7 +86,7 @@ class MainFragment : Fragment() {
 //            }
 //
 //            dialog.show()
-        }
+//        }
     }
     
 
